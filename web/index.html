@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SplitPool — settle up on Monad</title>
+<style>
+  :root { --bg:#0e0f13; --card:#181a21; --ink:#e8eaf0; --dim:#9aa0ae; --acc:#836EF9; --ok:#3ecf8e; --bad:#ff6b6b; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:15px/1.5 system-ui,sans-serif; background:var(--bg); color:var(--ink); }
+  header { padding:20px 24px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #262a35; }
+  h1 { font-size:20px; margin:0; } h1 span { color:var(--acc); }
+  main { max-width:880px; margin:0 auto; padding:24px; display:grid; gap:16px; }
+  .card { background:var(--card); border:1px solid #262a35; border-radius:12px; padding:18px; }
+  .card h2 { margin:0 0 10px; font-size:15px; color:var(--dim); text-transform:uppercase; letter-spacing:.06em; }
+  button { background:var(--acc); color:#fff; border:0; border-radius:8px; padding:9px 14px; font-weight:600; cursor:pointer; }
+  button.ghost { background:#262a35; }
+  button:disabled { opacity:.45; cursor:default; }
+  input, textarea { width:100%; background:#0e0f13; border:1px solid #2c3140; color:var(--ink); border-radius:8px; padding:9px 10px; margin:4px 0 10px; font:inherit; }
+  label { font-size:13px; color:var(--dim); }
+  .row { display:flex; gap:10px; flex-wrap:wrap; } .row > div { flex:1; min-width:180px; }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  td, th { text-align:left; padding:6px 8px; border-bottom:1px solid #262a35; }
+  .pos { color:var(--ok); } .neg { color:var(--bad); }
+  #log { font:12px/1.5 ui-monospace,monospace; color:var(--dim); white-space:pre-wrap; max-height:180px; overflow:auto; }
+  .pill { font-size:12px; padding:3px 10px; border-radius:999px; background:#262a35; color:var(--dim); }
+  .pill.on { background:#1f3d31; color:var(--ok); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Split<span>Pool</span> <span class="pill" id="netpill">offline</span></h1>
+  <div>
+    <span class="pill" id="acct">no wallet</span>
+    <button id="connect">Connect wallet</button>
+  </div>
+</header>
+<main>
+  <div class="card">
+    <h2>1 · Create or open a pool</h2>
+    <div class="row">
+      <div><label>New pool name</label><input id="poolName" placeholder="weekend trip"></div>
+      <div><label>&nbsp;</label><button id="createPool">Create pool</button></div>
+    </div>
+    <div class="row">
+      <div><label>Open pool #</label><input id="poolId" type="number" min="0" value="0"></div>
+      <div><label>&nbsp;</label><button class="ghost" id="loadPool">Load</button>
+      <button class="ghost" id="joinPool">Join this pool</button></div>
+    </div>
+    <div id="poolInfo"></div>
+  </div>
+
+  <div class="card">
+    <h2>2 · Record an expense</h2>
+    <div class="row">
+      <div><label>Payer address</label><input id="payer" placeholder="0x… (paid off-chain)"></div>
+      <div><label>Amount (MON)</label><input id="amount" type="number" step="any" min="0" placeholder="3"></div>
+    </div>
+    <label>Beneficiaries (one address per line)</label>
+    <textarea id="bens" rows="3" placeholder="0x…&#10;0x…"></textarea>
+    <label>Memo</label><input id="memo" placeholder="dinner at Nobu">
+    <button id="addExpense">Record expense</button>
+  </div>
+
+  <div class="card">
+    <h2>3 · Settle</h2>
+    <div class="row">
+      <div><label>Pre-fund deposit (MON)</label><input id="depAmt" type="number" step="any" min="0"></div>
+      <div><label>&nbsp;</label><button class="ghost" id="deposit">Deposit</button></div>
+    </div>
+    <div class="row">
+      <div><label>Your position</label><div id="myNet">—</div></div>
+      <div><label>&nbsp;</label><button id="settle">Settle what I owe</button>
+      <button id="withdraw">Withdraw credits</button></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Balance sheet</h2>
+    <table><thead><tr><th>Member</th><th>Net (MON)</th></tr></thead><tbody id="sheet"></tbody></table>
+  </div>
+
+  <div class="card"><h2>Log</h2><div id="log"></div></div>
+</main>
+
+<script type="module">
+import { ethers } from "https://cdn.jsdelivr.net/npm/ethers@6.13.4/+esm";
+
+const MONAD = {
+  chainId: "0x279f", // 10143
+  chainName: "Monad Testnet",
+  nativeCurrency: { name: "MON", symbol: "MON", decimals: 18 },
+  rpcUrls: ["https://testnet-rpc.monad.xyz"],
+  blockExplorerUrls: ["https://testnet.monadexplorer.com"],
+};
+// Set after devnet deploy (scripts/deploy.ts writes web/contract.json)
+let CONTRACT = null, ABI = null;
+try {
+  const meta = await (await fetch("./contract.json")).json();
+  CONTRACT = meta.address; ABI = meta.abi;
+} catch { log("contract.json not found — deploy first (npx hardhat run scripts/deploy.ts --network monadTestnet)"); }
+
+const $ = (id) => document.getElementById(id);
+const log = (m) => { $("log").textContent += `[${new Date().toLocaleTimeString()}] ${m}\n`; $("log").scrollTop = 1e9; };
+
+let provider, signer, contract;
+
+async function connect() {
+  if (!window.ethereum) return log("MetaMask not found");
+  provider = new ethers.BrowserProvider(window.ethereum);
+  await provider.send("eth_requestAccounts", []);
+  try { await window.ethereum.request({ method: "wallet_switchEthereumChain", params: [{ chainId: MONAD.chainId }] }); }
+  catch (e) {
+    if (e.code === 4902) await window.ethereum.request({ method: "wallet_addEthereumChain", params: [MONAD] });
+    else throw e;
+  }
+  signer = await provider.getSigner();
+  const addr = await signer.getAddress();
+  $("acct").textContent = addr.slice(0, 6) + "…" + addr.slice(-4);
+  $("netpill").textContent = "monad testnet"; $("netpill").classList.add("on");
+  if (CONTRACT) contract = new ethers.Contract(CONTRACT, ABI, signer);
+  log("connected " + addr);
+  loadPool();
+}
+
+async function loadPool() {
+  if (!contract) return;
+  const id = BigInt($("poolId").value || 0);
+  try {
+    const p = await contract.pools(id);
+    $("poolInfo").innerHTML = `<p><b>#${id} ${p[0]}</b> — ${p[3]} members · ${ethers.formatEther(p[5])} MON expensed · ${ethers.formatEther(p[6])} MON settled</p>`;
+    refreshSheet(id);
+  } catch { $("poolInfo").textContent = "pool not found"; }
+}
+
+async function refreshSheet(id) {
+  const [members, nets] = await contract.balanceSheet(id);
+  const me = signer ? (await signer.getAddress()).toLowerCase() : "";
+  $("sheet").innerHTML = members.map((m, i) => {
+    const n = parseFloat(ethers.formatEther(nets[i]));
+    const cls = n > 0 ? "pos" : n < 0 ? "neg" : "";
+    if (m.toLowerCase() === me) $("myNet").textContent = n.toFixed(4) + " MON";
+    return `<tr><td>${m.slice(0, 8)}…${m.slice(-6)}${m.toLowerCase() === me ? " (you)" : ""}</td><td class="${cls}">${n.toFixed(4)}</td></tr>`;
+  }).join("");
+}
+
+const send = async (label, p) => {
+  try {
+    const t = await p; log(label + " tx " + t.hash);
+    await t.wait(); log(label + " confirmed"); loadPool();
+  } catch (e) { log(label + " failed: " + (e.shortMessage || e.message)); }
+};
+
+$("connect").onclick = () => connect().catch((e) => log("connect: " + e.message));
+$("createPool").onclick = () => send("createPool", contract.createPool($("poolName").value || "pool"));
+$("loadPool").onclick = () => loadPool();
+$("joinPool").onclick = () => send("joinPool", contract.joinPool(BigInt($("poolId").value)));
+$("addExpense").onclick = () => {
+  const bens = $("bens").value.split(/\s+/).filter(Boolean);
+  send("recordExpense", contract.recordExpense(
+    BigInt($("poolId").value), $("payer").value, bens, ethers.parseEther($("amount").value || "0"), $("memo").value));
+};
+$("deposit").onclick = () => send("deposit", contract.deposit(BigInt($("poolId").value), { value: ethers.parseEther($("depAmt").value || "0") }));
+$("settle").onclick = async () => {
+  const net = await contract.netBalance(BigInt($("poolId").value), await signer.getAddress());
+  if (net >= 0n) return log("nothing to settle");
+  send("settle", contract.settle(BigInt($("poolId").value), { value: -net }));
+};
+$("withdraw").onclick = () => send("withdraw", contract.withdrawCredits(BigInt($("poolId").value)));
+</script>
+</body>
+</html>
