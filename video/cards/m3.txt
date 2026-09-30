@@ -1,0 +1,1 @@
+works with any MCP-capable AI agent

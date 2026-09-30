@@ -1,0 +1,20 @@
+creating pool # 4
+  tx createPool-video: 0x5ab10cfd93578a005f4383cc3f02817795611ba4389fce043ffbdf046ba3d07b
+     https://testnet.monadexplorer.com/tx/0x5ab10cfd93578a005f4383cc3f02817795611ba4389fce043ffbdf046ba3d07b
+  tx join-bob: 0xe527915a1de685e7d7fa6c49187ad1795d18d491e9febb27514bcc9438950235
+     https://testnet.monadexplorer.com/tx/0xe527915a1de685e7d7fa6c49187ad1795d18d491e9febb27514bcc9438950235
+  tx join-carol: 0x9e563708452980271e6406855c8699df5e7f3a427e2e6bf2c2db84a2e3344bee
+     https://testnet.monadexplorer.com/tx/0x9e563708452980271e6406855c8699df5e7f3a427e2e6bf2c2db84a2e3344bee
+  tx join-dana: 0xa25ff5189af45f1b0fe93d6820e5befface1dccd3730efc696c922b4f284a67a
+     https://testnet.monadexplorer.com/tx/0xa25ff5189af45f1b0fe93d6820e5befface1dccd3730efc696c922b4f284a67a
+  parsed: "hackathon pizza $0.03 split 4 ways" -> {"amount":0.03,"splitWays":4,"memo":"hackathon pizza","needsDisambiguation":false}
+  tx expense-hackathon-pizza: 0x3c2fa5ee607ae3375be59920d41d1bdf450d0f589ae143e3d0d1b99c3b265d81
+     https://testnet.monadexplorer.com/tx/0x3c2fa5ee607ae3375be59920d41d1bdf450d0f589ae143e3d0d1b99c3b265d81
+  parsed: "whiteboard markers $0.02 split 2 ways" -> {"amount":0.02,"splitWays":2,"memo":"whiteboard markers","needsDisambiguation":false}
+  tx expense-whiteboard-markers: 0xea5dfe171120d18c9403cb09654a3bfa5f1d82fa38f4b5031c4027bb49211cd5
+     https://testnet.monadexplorer.com/tx/0xea5dfe171120d18c9403cb09654a3bfa5f1d82fa38f4b5031c4027bb49211cd5
+  parsed: "late night tacos $0.045 split 3 ways" -> {"amount":0.045,"splitWays":3,"memo":"late night tacos","needsDisambiguation":false}
+  tx expense-late-night-tacos: 0x8b0af90009815315e25d55d075f0951a5be8c6f54f2c579d561529e69cc21fe8
+     https://testnet.monadexplorer.com/tx/0x8b0af90009815315e25d55d075f0951a5be8c6f54f2c579d561529e69cc21fe8
+live balance sheet: [{"member":"0x128Df013BA79981eeb6d00A458C3e933Ec29C052","netMon":"0.0225"},{"member":"0xB1cb743D501613aef6fe47760Dd658D22791211a","netMon":"-0.0225"},{"member":"0x5b545Ac73451A722dB8e1D8c7D12A437BB7DD158","netMon":"-0.0125"},{"member":"0x014B81CE0603107Cf7324A8C021B63630Fe3edE9","netMon":"0.0125"}]
+LIVE POOL READY (unsettled) — pool #4

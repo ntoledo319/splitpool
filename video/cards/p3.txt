@@ -1,0 +1,1 @@
+SplitPool keeps the ledger on-chain and settles in one click

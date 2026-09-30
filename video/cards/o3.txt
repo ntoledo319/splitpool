@@ -1,0 +1,1 @@
+MCP server + Solidity + static dApp - testnet only, zero mainnet funds

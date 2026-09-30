@@ -103,7 +103,11 @@ try {
 const $ = (id) => document.getElementById(id);
 const log = (m) => { $("log").textContent += `[${new Date().toLocaleTimeString()}] ${m}\n`; $("log").scrollTop = 1e9; };
 
-let provider, signer, contract;
+let provider, signer, contract, readContract;
+if (CONTRACT) {
+  // read-only fallback so anyone can browse pools without connecting a wallet
+  readContract = new ethers.Contract(CONTRACT, ABI, new ethers.JsonRpcProvider(MONAD.rpcUrls[0]));
+}
 
 async function connect() {
   if (!window.ethereum) return log("MetaMask not found");
@@ -124,17 +128,19 @@ async function connect() {
 }
 
 async function loadPool() {
-  if (!contract) return;
+  const c = contract || readContract;
+  if (!c) return;
   const id = BigInt($("poolId").value || 0);
   try {
-    const p = await contract.pools(id);
+    const p = await c.pools(id);
     $("poolInfo").innerHTML = `<p><b>#${id} ${p[0]}</b> — ${p[3]} members · ${ethers.formatEther(p[4])} MON expensed · ${ethers.formatEther(p[5])} MON settled</p>`;
     refreshSheet(id);
   } catch { $("poolInfo").textContent = "pool not found"; }
 }
 
 async function refreshSheet(id) {
-  const [members, nets] = await contract.balanceSheet(id);
+  const c = contract || readContract;
+  const [members, nets] = await c.balanceSheet(id);
   const me = signer ? (await signer.getAddress()).toLowerCase() : "";
   $("sheet").innerHTML = members.map((m, i) => {
     const n = parseFloat(ethers.formatEther(nets[i]));

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><style>
+  body { margin:0; background:#0d1117; }
+  #term { padding:26px 30px 90px; font:15px/1.62 'DejaVu Sans Mono',monospace; color:#c9d1d9; white-space:pre-wrap; }
+  .cmd { color:#7ee787; font-weight:bold; }
+  .tx  { color:#79c0ff; }
+  .hdr { color:#d2a8ff; font-weight:bold; }
+  .num { color:#ffa657; }
+  #capbar { position:fixed; left:0; right:0; bottom:0; height:64px; background:rgba(14,15,19,.94);
+    border-top:2px solid #836EF9; display:flex; align-items:center; justify-content:center;
+    font:600 22px/1.3 'DejaVu Sans',sans-serif; color:#e8eaf0; text-align:center; padding:0 30px; }
+</style></head><body>
+<div id="term"></div><div id="capbar"></div>
+<script>
+// Every line below is REAL output from the actual Monad testnet run of
+// scripts/demo_scenario.mjs + demo_finish.mjs (pool #3), tx hashes verified
+// against on-chain events in evidence/pool3-events.json.
+const LINES = [
+ ["cmd", "$ node scripts/demo_scenario.mjs   # Monad testnet, chain 10143", 2.2],
+ ["hdr", "== create pool ==", 0.9],
+ ["", "  tx createPool: 0x6b6528c1040d6cbaca78509f955b40f0ba33f9dae2edd5a3570d55342b332b0d", 1.6],
+ ["", "  poolId: 3  \"metropolis hacker house\"", 1.2],
+ ["hdr", "== 4 members join (each from their own wallet) ==", 0.9],
+ ["", "  alice 0x128D…C052 · bob 0xB1cb…211a · carol 0x5b54…D158 · dana 0x014B…edE9", 1.6],
+ ["tx", "  join-bob 0xe31bfa48 · join-carol 0x52644227 · join-dana 0xe1c6d18d", 1.6],
+ ["hdr", "== MCP agent: parse free text, record on-chain ==", 1.0],
+ ["", "  MCP tools: parse_expense, balance_sheet, suggest_settlements, record_expense", 1.5],
+ ["", "  parsed: \"airport rideshare $0.12 split 4 ways\" -> {amount: 0.12, splitWays: 4}", 1.5],
+ ["tx", "  tx expense-airport-rideshare: 0x53bfaa39a11783ff89f122b644d9a21a958d82f04f9fb18d8e7f7cb1596fb247", 1.4],
+ ["", "  parsed: \"hotel night one $0.20 split 3 ways\" (alice skipped) -> {amount: 0.2, splitWays: 3}", 1.5],
+ ["tx", "  tx expense-hotel-night-one: 0xa7d842135ae75ef3464231b94b16f75bebf11c640b235286558abe7324cf5e9e", 1.4],
+ ["", "  parsed: \"team dinner $0.16 split 4 ways\" · \"coffee and snacks $0.04 split 2 ways\"", 1.5],
+ ["tx", "  tx expense-team-dinner: 0x410b702c · tx expense-coffee-and-snacks: 0x29c8145b", 1.6],
+ ["hdr", "== balance_sheet (read by MCP agent) ==", 1.0],
+ ["num", "  alice +0.0300   bob +0.0633   carol +0.0233   dana -0.1167 MON", 2.2],
+ ["hdr", "== suggest_settlements: 3 transfers settle everything ==", 1.0],
+ ["", "  dana -> bob 0.063333 · dana -> alice 0.03 · dana -> carol 0.023333", 2.0],
+ ["hdr", "== dana settles on-chain ==", 0.9],
+ ["tx", "  tx settle-dana: 0xc4786cb29f6894e6077e7abdcedd846bf8a28bf1f9356322116edf4752dcb15c", 1.8],
+ ["hdr", "== creditors withdraw ==", 0.9],
+ ["tx", "  withdraw-alice 0x75b93e22 · withdraw-bob 0x2fc0a0da · withdraw-carol 0xa19326ed", 1.8],
+ ["hdr", "== final state ==", 0.9],
+ ["num", "  all nets: 0 · contract balance: 0 MON · everyone square", 2.4],
+];
+const CAPTIONS = {
+  0: "Real run: four wallets, one pool, on Monad testnet",
+  6: "The MCP agent turns chat lines into on-chain ledger entries",
+  13: "On-chain balance sheet - uneven splits, exact accounting",
+  16: "The debtor pays once; creditors withdraw. No intermediary.",
+};
+const term = document.getElementById("term");
+const cap = document.getElementById("capbar");
+const PACE = 1.35;
+window.__DUR = LINES.reduce((a, l) => a + l[2], 0) * PACE + 2.5;
+let t = 0.6;
+LINES.forEach(([cls, text, wait], i) => {
+  setTimeout(() => {
+    const div = document.createElement("div");
+    if (cls) div.className = cls;
+    div.textContent = text;
+    term.appendChild(div);
+    while (term.scrollHeight > 640 && term.firstChild) term.removeChild(term.firstChild);
+    if (CAPTIONS[i]) cap.textContent = CAPTIONS[i];
+  }, t * 1000);
+  t += wait * PACE;
+});
+cap.textContent = CAPTIONS[0];
+</script></body></html>
