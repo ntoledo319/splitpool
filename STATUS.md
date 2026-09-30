@@ -33,7 +33,30 @@
 writeup.md (copy-paste fields) · splitpool-demo.mp4 (v2, 3m00s 720p captioned, adds pool #4 write-path
 settle footage; v1 backup splitpool-demo-v1.mp4) · evidence.md (all tx hashes, incl. pool #4 settlement)
 
+## Sponsor bounties (recon 2026-09-30, from monad.xyz/metropolis prize cards + sponsor announcements)
+| Bounty | Prize | Requirement | Fit for SplitPool? |
+|---|---|---|---|
+| Privy "Privy!" | $5,000 | Best use of Privy embedded wallets | FIT — email/social-login wallets so members join/settle without MetaMask; literally the "crypto that doesn't feel like crypto" thesis; dApp-only change |
+| Envio "Best Use of Envio" | $1,000 | Index with Envio | FIT — pool event history/audit feed (expense list is a real product gap: dApp shows current nets only); config-driven, free hosted tier |
+| Dynamic "Best Use of Dynamic" | $5,000 | Dynamic wallet SDK | ALTERNATIVE to Privy (same category — pick one, never both) |
+| MetaMask "Best Agent Wallet Plugin" | $2,500 | Agent wallet plugin | STRETCH — scoped delegation so MCP agent key may only recordExpense (real security story); plugin API effort uncertain |
+| Mera ×2 (passkey UX / "One Passkey, Many Keys") | $2,500 ea | Mera passkey accounts | STRETCH — claim-link onboarding for wallet-less members; contract-level passkey work > half day |
+| Agora "Best Cross-Border Payments App" | $10,000 | Payments app, AUSD angle | BLOCKED — best conceptual fit (settle expenses in stablecoin) but no AUSD on Monad testnet (checked 0x0000…9012a: no code); mainnet would violate $0/testnet |
+| Chainlink "Best workflow with CRE" | $3,000 | CRE workflow | NO — would replace the MCP agent's job with sponsor infra = checkbox integration |
+| Nansen "Best use of Nansen" | $5,000 | Nansen API/CLI analytics | NO — wallet labels add nothing to expense splitting |
+| Perpl API / Analytics ($5K/$3K), Kuru ×2 ($5K), Agora Mobile Trading ($10K) | — | trading apps | NO — trading theme, off-product |
+| Aurora "Bring Any-Chain Liquidity" | $5,000 | Intents integration | NO — cross-chain settle is nice-to-have; NEAR intents > half day, $0 testnet path unclear |
+| Alchemy ($1K), Kimi ($3K), Qwen ($5K), Hunyuan ($2K) | credits | use their platform/model | NO — credits not cash (KIMI-powered agent is cute, still credits) |
+| Monad Foundation "Best Community Team Project" | $5,000 | community team | NO — solo entry |
+| Cleanverse "Best Integration of CVI/CVA" | $2,000 | CVI/CVA integration | NO — no clear utility for group expenses |
+
+**Verdict:** two honest, small, natural fits — **Privy ($5K)** and **Envio ($1K)**, both dApp-layer only,
+no contract changes, ≤ half a day combined, $0 testnet. Privy integration would be: Privy SDK login
+creating embedded wallets for members who join/settle from the dApp. Envio integration would be: index
+PoolCreated/ExpenseRecorded/Settled/Withdrawn → "pool history" feed in the dApp. Agora ($10K) is the
+dream fit but blocked (no testnet AUSD). NOT building any of this yet — decision needed before Oct 13.
+
 ## Next 3 steps
 1. Ledger registers + submits before Oct 13 (outbox note updated).
-2. Optional: settle pool #4 on camera if judges want write-path UI footage.
+2. Decide on Privy + Envio integrations (half day total, real utility) — see Sponsor bounties verdict above.
 3. Keep repo + Pages up through Nov 3; answer judge questions.
