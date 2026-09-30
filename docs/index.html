@@ -128,7 +128,7 @@ async function loadPool() {
   const id = BigInt($("poolId").value || 0);
   try {
     const p = await contract.pools(id);
-    $("poolInfo").innerHTML = `<p><b>#${id} ${p[0]}</b> — ${p[3]} members · ${ethers.formatEther(p[5])} MON expensed · ${ethers.formatEther(p[6])} MON settled</p>`;
+    $("poolInfo").innerHTML = `<p><b>#${id} ${p[0]}</b> — ${p[3]} members · ${ethers.formatEther(p[4])} MON expensed · ${ethers.formatEther(p[5])} MON settled</p>`;
     refreshSheet(id);
   } catch { $("poolInfo").textContent = "pool not found"; }
 }

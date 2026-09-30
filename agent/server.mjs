@@ -114,6 +114,7 @@ server.tool(
     const hash = await wallet.writeContract({
       address: ADDRESS, abi: ABI, functionName: "recordExpense",
       args: [BigInt(poolId), payer, beneficiaries, parseEther(amountMon), memo],
+      gas: 400000n, // public-RPC gas estimation under-counts on Monad testnet
     });
     return { content: [{ type: "text", text: `recordExpense tx: ${hash}` }] };
   }

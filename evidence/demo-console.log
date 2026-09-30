@@ -1,0 +1,35 @@
+accounts: {
+  "alice": "0x128Df013BA79981eeb6d00A458C3e933Ec29C052",
+  "bob": "0xB1cb743D501613aef6fe47760Dd658D22791211a",
+  "carol": "0x5b545Ac73451A722dB8e1D8c7D12A437BB7DD158",
+  "dana": "0x014B81CE0603107Cf7324A8C021B63630Fe3edE9"
+}
+
+== 1. fund demo members ==
+  tx fund-bob: 0x644244035ac7e81cfa7862a9dfc1985a8a917c79f0f279eff0c8fee073c75463
+     https://testnet.monadexplorer.com/tx/0x644244035ac7e81cfa7862a9dfc1985a8a917c79f0f279eff0c8fee073c75463
+  bob balance after funding tx: 0.7345042 MON
+  bob funded (0.7345042 MON)
+  tx fund-carol: 0x78a438567436877ab59ee87b7262cfc2742388fbcf8c149e567ecd7cd9e1f88c
+     https://testnet.monadexplorer.com/tx/0x78a438567436877ab59ee87b7262cfc2742388fbcf8c149e567ecd7cd9e1f88c
+  tx fund-carol-retry2: 0x4602b23cda01e376a5df9c9cf622933a790b24f7b3268c0ca860f66e672b379b
+     https://testnet.monadexplorer.com/tx/0x4602b23cda01e376a5df9c9cf622933a790b24f7b3268c0ca860f66e672b379b
+  carol balance after funding tx: 0.745 MON
+  carol funded (0.745 MON)
+  tx fund-dana: 0xfaa2fc87179af9d906c810f47e26bec29b30d520681c62662b3aa72ea1000d6b
+     https://testnet.monadexplorer.com/tx/0xfaa2fc87179af9d906c810f47e26bec29b30d520681c62662b3aa72ea1000d6b
+  tx fund-dana-retry2: 0xb35b7b2a7a6f6374fd647aa7f2e0f26f8caaaf12747b1bc511b3bce1edcc915a
+     https://testnet.monadexplorer.com/tx/0xb35b7b2a7a6f6374fd647aa7f2e0f26f8caaaf12747b1bc511b3bce1edcc915a
+  tx fund-dana-retry3: 0xc94f8f6a466b624c8fda5053be49d9f5b0018f10b92ce416d8e8fec2e4c7e015
+     https://testnet.monadexplorer.com/tx/0xc94f8f6a466b624c8fda5053be49d9f5b0018f10b92ce416d8e8fec2e4c7e015
+  tx fund-dana-retry4: 0x7f631929f4964ad9de82bbdb00df2d43372a7083aa21f9c94062deb29ac97b5f
+     https://testnet.monadexplorer.com/tx/0x7f631929f4964ad9de82bbdb00df2d43372a7083aa21f9c94062deb29ac97b5f
+file:///home/nick/Development/experiments/fastcash-0924/work/hack-metropolis/scripts/demo_scenario.mjs:85
+        if (rcpt.status !== "success") { lastErr = new Error("reverted"); await sleep(3000 * fattempt); continue; }
+                                                   ^
+
+Error: reverted
+    at file:///home/nick/Development/experiments/fastcash-0924/work/hack-metropolis/scripts/demo_scenario.mjs:85:52
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+Node.js v26.8.2

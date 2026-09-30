@@ -3,3 +3,4 @@ node_modules/
 .deployer-address
 artifacts/
 cache/
+.demo-keys.json

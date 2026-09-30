@@ -1,0 +1,45 @@
+{
+  "poolId": "3",
+  "contract": "0xe2f7bbd5163b0acd695cc50c34c46109e7d7a4d4",
+  "txs": {
+    "fund-dana-from-bob": {
+      "hash": "0x9088754882d6c2ffcd235208984e8496d4c6fa0dad48fd6e3965eea51e37bf9c",
+      "url": "https://testnet.monadexplorer.com/tx/0x9088754882d6c2ffcd235208984e8496d4c6fa0dad48fd6e3965eea51e37bf9c"
+    },
+    "settle-dana": {
+      "hash": "0xc4786cb29f6894e6077e7abdcedd846bf8a28bf1f9356322116edf4752dcb15c",
+      "url": "https://testnet.monadexplorer.com/tx/0xc4786cb29f6894e6077e7abdcedd846bf8a28bf1f9356322116edf4752dcb15c"
+    },
+    "withdraw-alice": {
+      "hash": "0x75b93e22763bf6c9a5baac6e87ee34e0e22b2d78dd4373e9e79a55b41a214bbc",
+      "url": "https://testnet.monadexplorer.com/tx/0x75b93e22763bf6c9a5baac6e87ee34e0e22b2d78dd4373e9e79a55b41a214bbc"
+    },
+    "withdraw-bob": {
+      "hash": "0x2fc0a0da704721f578e820ba03de2231149dfadb136dbcc752c078316a623cfc",
+      "url": "https://testnet.monadexplorer.com/tx/0x2fc0a0da704721f578e820ba03de2231149dfadb136dbcc752c078316a623cfc"
+    },
+    "withdraw-carol": {
+      "hash": "0xa19326edbb295d03d4db8c127adc30e06f9838fb65f94f23c1c4e755106c12cd",
+      "url": "https://testnet.monadexplorer.com/tx/0xa19326edbb295d03d4db8c127adc30e06f9838fb65f94f23c1c4e755106c12cd"
+    }
+  },
+  "note": "settle/withdraw finish for pool 3; expenses recorded in demo-console.log run reaching step 7",
+  "finalSheet": [
+    {
+      "member": "0x128Df013BA79981eeb6d00A458C3e933Ec29C052",
+      "netMon": "0"
+    },
+    {
+      "member": "0xB1cb743D501613aef6fe47760Dd658D22791211a",
+      "netMon": "0"
+    },
+    {
+      "member": "0x5b545Ac73451A722dB8e1D8c7D12A437BB7DD158",
+      "netMon": "0"
+    },
+    {
+      "member": "0x014B81CE0603107Cf7324A8C021B63630Fe3edE9",
+      "netMon": "0"
+    }
+  ]
+}
