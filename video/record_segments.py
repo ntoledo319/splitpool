@@ -50,14 +50,14 @@ def dapp_seg(page):
     page.fill("#poolId", "4")
     page.click("#loadPool")
     page.wait_for_timeout(5000)
+    print("DEBUG poolInfo:", page.inner_text("#poolInfo"))
     page.evaluate(
         "() => { document.getElementById('capbar').textContent ="
         "'Real unsettled balances - settle() would zero them on-chain'; }"
     )
-    page.evaluate("() => document.querySelector('main .card:nth-of-type(4)').scrollIntoView({behavior:'smooth'})")
+    page.evaluate("() => window.scrollTo({top: 620, behavior: 'smooth'})")
     page.wait_for_timeout(8000)
-    # also show the log line proving live RPC reads
-    page.evaluate("() => window.scrollTo(0, 0)")
+    page.evaluate("() => window.scrollTo({top: 0, behavior: 'smooth'})")
     page.wait_for_timeout(4000)
 
 record(term_seg, "term.webm")

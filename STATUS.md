@@ -4,30 +4,34 @@
 **Track:** Consumer Products & Payments ("shared wallets and group spending").
 **Deadline:** 2026-10-13 submission; judging 10-14→27; winners 11-03.
 
-## Why this pick
-- $250K+ USD pool: $30K/track (3 winners) + $25K grand champion + sponsor bounties; global, solo OK.
-- 13-day runway (others: Arbitrum Oct 4, CLOCK IN Oct 8, Perps Oct 9).
-- Deliverable = working product + public profile (demo, write-up, code link) — matches agent build speed.
-
-## Disqualifiers
-- Solana Perps & Prediction (Oct 9): Solana Foundation hackathons run with Colosseum → Hunter's cluster. Dropped.
-- CLOCK IN (Oct 8): RadiantsDAO (not Colosseum) but requires Seeker mobile/dApp-Store build, radiant.nexus acct mechanics unknown — high risk.
-- Arbitrum Open House (Oct 4): HackQuest registration closed Oct 2, only 4 days, prize partly milestone-locked grants.
+## Why this pick / disqualifiers
+- $250K+ USD pool ($30K/track + $25K grand champion + sponsors); global, solo OK; 13-day runway.
+- Deliverable = working product + profile (demo, write-up, code link) — matches agent build speed.
+- Solana Perps (Oct 9): Solana Foundation hackathons run with Colosseum → Hunter's cluster. Dropped.
+- CLOCK IN (Oct 8): Seeker mobile/dApp-Store build, radiant.nexus acct unknown — high risk.
+- Arbitrum (Oct 4): HackQuest reg closed Oct 2, 4 days left, prize partly milestone-locked grants.
 
 ## Registration state
-- NOT registered. hackathon.monad.xyz is OAuth-only (Google or GitHub). No email+alias path.
-- Google session in Mint's Chrome = Nick's personal (toledonick98) → per mission, final submit routes via Ledger.
-- GitHub OAuth needs github.com web password for ntoledo319 — not available to Mint.
-- Handoff note staged: outbox/mint-to-ledger-20260930-metropolis-submit.md. Registration = 1 OAuth click + profile; must happen before Oct 13.
+- NOT registered: hackathon.monad.xyz is OAuth-only (Google/GitHub). Google session in Mint's
+  Chrome = Nick's personal; no github.com web password for ntoledo319 → submit routes via Ledger.
+- Handoff: outbox/mint-to-ledger-20260930-metropolis-submit.md (updated, package complete).
 
 ## Build state (all verified)
-- Contract `contracts/SplitPool.sol` — net-ledger expense pools. 9/9 hardhat tests pass (viaIR, solc 0.8.24).
-- DEPLOYED Monad testnet (chain 10143): 0xe2f7bbd5163b0acd695cc50c34c46109e7d7a4d4 (faucet: 5 MON, $0).
-- On-chain smoke passed: pool #0 created + expense recorded (scripts/testnet_smoke.ts).
-- dApp docs/index.html (ethers v6 CDN) live: https://ntoledo319.github.io/splitpool/ ; repo: github.com/ntoledo319/splitpool
-- MCP agent agent/server.mjs: parse_expense, balance_sheet, suggest_settlements, record_expense — stdio smoke OK.
+- Contract contracts/SplitPool.sol, 9/9 hardhat tests pass. Deployed Monad testnet (chain 10143):
+  0xe2f7bbd5163b0acd695cc50c34c46109e7d7a4d4 (faucet 5 MON, $0 spend).
+- dApp (ethers v6, read-only w/o wallet): https://ntoledo319.github.io/splitpool/ · repo github.com/ntoledo319/splitpool
+- MCP agent agent/server.mjs (parse_expense, balance_sheet, suggest_settlements, record_expense) — smoke OK.
+
+## Demo evidence (real testnet txs only)
+- Pool #3: 4 members, 4 MCP-recorded expenses (uneven splits), settle + 3 withdrawals → all nets 0.
+  evidence/pool3-events.json (recovered from chain), demo-console.log, demo-finish-console.log.
+- Pool #4: left unsettled for the dApp video segment (evidence/demo-livepool.json).
+- Quirk: Monad testnet charges FULL gas limit per tx; scripts use tight limits + retries.
+
+## Submission package — COMPLETE → outbox/metropolis/
+writeup.md (copy-paste fields) · splitpool-demo.mp4 (2m06s 720p captioned) · evidence.md (all tx hashes)
 
 ## Next 3 steps
-1. Multi-member demo pool on testnet (2-3 accounts), full split→settle→withdraw on-chain.
-2. Record 2-3 min demo video (reuse work/mermail video tooling); write submission profile text.
-3. Ledger registers + submits via OAuth before Oct 13 (handoff in outbox/).
+1. Ledger registers + submits before Oct 13 (outbox note updated).
+2. Optional: settle pool #4 on camera if judges want write-path UI footage.
+3. Keep repo + Pages up through Nov 3; answer judge questions.
