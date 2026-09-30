@@ -10,7 +10,7 @@ on-chain in one click. No intermediary, no spreadsheet, no "I'll pay you back la
 ## Layout
 
 - `contracts/` — Solidity pool contract (Hardhat, Monad testnet target)
-- `web/` — static dApp (ethers v6 via CDN, MetaMask + Monad testnet)
+- `docs/` — static dApp (ethers v6 via CDN, MetaMask + Monad testnet), GitHub Pages root
 - `agent/` — MCP server: expense-ledger tools an AI agent can call
 - `scripts/` — build/deploy/ops helpers (incl. CDP registration probes)
 

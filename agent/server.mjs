@@ -19,7 +19,7 @@ const monadTestnet = {
 
 const ADDRESS = process.env.SPLITPOOL_ADDRESS;
 const ABI = ADDRESS
-  ? JSON.parse(readFileSync(new URL("../web/contract.json", import.meta.url), "utf8")).abi
+  ? JSON.parse(readFileSync(new URL("../docs/contract.json", import.meta.url), "utf8")).abi
   : null;
 
 const pub = createPublicClient({ chain: monadTestnet, transport: http(RPC) });

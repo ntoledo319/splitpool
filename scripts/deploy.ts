@@ -10,7 +10,7 @@ console.log("SplitPool deployed:", pool.address);
 
 const artifact = JSON.parse(readFileSync("artifacts/contracts/SplitPool.sol/SplitPool.json", "utf8"));
 writeFileSync(
-  "web/contract.json",
+  "docs/contract.json",
   JSON.stringify({ address: pool.address, abi: artifact.abi, chainId: 10143 }, null, 2)
 );
-console.log("wrote web/contract.json");
+console.log("wrote docs/contract.json");

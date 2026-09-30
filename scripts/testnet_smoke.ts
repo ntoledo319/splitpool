@@ -5,7 +5,7 @@ import { readFileSync } from "node:fs";
 const { viem } = await network.connect();
 const [deployer] = await viem.getWalletClients();
 const publicClient = await viem.getPublicClient();
-const { address, abi } = JSON.parse(readFileSync("web/contract.json", "utf8"));
+const { address, abi } = JSON.parse(readFileSync("docs/contract.json", "utf8"));
 console.log("contract:", address);
 
 const hash = await deployer.writeContract({
