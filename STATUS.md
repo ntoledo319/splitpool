@@ -25,11 +25,13 @@
 ## Demo evidence (real testnet txs only)
 - Pool #3: 4 members, 4 MCP-recorded expenses (uneven splits), settle + 3 withdrawals → all nets 0.
   evidence/pool3-events.json (recovered from chain), demo-console.log, demo-finish-console.log.
-- Pool #4: left unsettled for the dApp video segment (evidence/demo-livepool.json).
+- Pool #4: left unsettled for the dApp video segment (evidence/demo-livepool.json), then settled
+  on camera for video v2 (evidence/pool4-settle.json; settle-bob/carol + withdraw-alice/dana, all real).
 - Quirk: Monad testnet charges FULL gas limit per tx; scripts use tight limits + retries.
 
 ## Submission package — COMPLETE → outbox/metropolis/
-writeup.md (copy-paste fields) · splitpool-demo.mp4 (2m06s 720p captioned) · evidence.md (all tx hashes)
+writeup.md (copy-paste fields) · splitpool-demo.mp4 (v2, 3m00s 720p captioned, adds pool #4 write-path
+settle footage; v1 backup splitpool-demo-v1.mp4) · evidence.md (all tx hashes, incl. pool #4 settlement)
 
 ## Next 3 steps
 1. Ledger registers + submits before Oct 13 (outbox note updated).

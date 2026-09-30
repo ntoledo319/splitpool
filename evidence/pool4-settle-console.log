@@ -1,0 +1,26 @@
+== pool #4 state BEFORE settlement ==
+  0x128Df013…  net 0.0225 MON
+  0xB1cb743D…  net -0.0225 MON
+  0x5b545Ac7…  net -0.0125 MON
+  0x014B81CE…  net 0.0125 MON
+
+== debtors settle (bob -0.0225, carol -0.0125) ==
+  bob settles 0.0225 MON
+  tx settle-bob: 0x8e03917df77f6c1257f365c5fb81e3896b0939df71bda074a7d09acb5dbd651b
+  carol settles 0.0125 MON
+  tx settle-carol: 0xac94d68e2f09c2df64002491b0dc0c8f7b9ac97b27b48926b94ce8c98e9b7942
+
+== creditors withdraw (alice +0.0225, dana +0.0125) ==
+  alice withdraws 0.0225 MON
+  tx withdraw-alice: 0x996ccd547fb36a4ddbeada08fa390d7c59ee3e700843ddd2602cab879aa98d2f
+  dana withdraws 0.0125 MON
+  tx withdraw-dana: 0x6a021aad9109da0f594429b5358471e565e06331bf80786070957b14f6eb3fc9
+
+== pool #4 state AFTER settlement ==
+  0x128Df013…  net 0 MON
+  0xB1cb743D…  net 0 MON
+  0x5b545Ac7…  net 0 MON
+  0x014B81CE…  net 0 MON
+
+evidence written to evidence/pool4-settle.json
+POOL 4 SETTLED — all real Monad testnet transactions
